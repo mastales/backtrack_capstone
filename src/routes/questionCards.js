@@ -9,6 +9,9 @@ router.get('/:qc_id/likes', likeController.getLikesByQuestionCard);
 // Add a like to a question card
 router.post('/:qc_id/likes', likeController.addLikeToQuestionCard);
 
+// Route to remove a like
+router.delete('/likes/:like_id', likeController.removeLikeFromQuestionCard);
+
 // Get shares for a question card
 router.get('/:qc_id/shares', shareController.getSharesByQuestionCard);
 
