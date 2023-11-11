@@ -1,4 +1,3 @@
-// Migration for creating the shares table
 exports.up = function(knex) {
     return knex.schema.createTable('shares', (table) => {
       table.increments('share_id').primary();
@@ -11,4 +10,3 @@ exports.up = function(knex) {
   exports.down = function(knex) {
     return knex.schema.dropTable('shares');
   };
-  

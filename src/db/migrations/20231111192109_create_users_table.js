@@ -1,6 +1,6 @@
 exports.up = function(knex) {
     return knex.schema.createTable('users', (table) => {
-      table.increments('user_id').primary();
+      table.increments('user_id').primary().unsigned().notNullable();
       table.string('spotify_id').unique().notNullable();
       table.string('username').notNullable();
       table.string('profile_picture_url');
@@ -12,4 +12,3 @@ exports.up = function(knex) {
   exports.down = function(knex) {
     return knex.schema.dropTable('users');
   };
-  
