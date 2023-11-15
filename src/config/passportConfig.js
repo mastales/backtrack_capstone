@@ -52,15 +52,24 @@ const configurePassport = () => {
   ));
 
   passport.serializeUser((user, done) => {
+    console.log('Serializing user:', user);
     done(null, user.user_id); 
+    console.log('Serialized user id:', user.user_id);
   });
 
   passport.deserializeUser((userId, done) => {
+    console.log('Deserializing user, user id:', userId);
     knex('users')
       .where({ user_id: userId })
       .first()
-      .then(user => done(null, user))
-      .catch(err => done(err));
+      .then(user => {
+        console.log('Deserialized user:', user);
+        done(null, user);
+      })
+      .catch(err => {
+        console.error('Error in deserialization:', err);
+        done(err);
+      });
   });
 };
 

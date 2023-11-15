@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const passport = require('passport');
 const expressSession = require('express-session');
-const configurePassport = require('./passportConfig');
+const configurePassport = require('./src/config/passportConfig');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,6 +46,10 @@ const spotifyAuth = require('./src/routes/spotifyAuth');
 app.use('/question_cards', questionCardsRouter);
 app.use('/songs', songsRouter);
 app.use('/auth/spotify', spotifyAuth);
+
+app.get('/', (req, res) => {
+    res.send('Welcome to the Spotify Authentication App!');
+  });
 
 // Handle 404 - Resource not found
 app.use((req, res, next) => {
