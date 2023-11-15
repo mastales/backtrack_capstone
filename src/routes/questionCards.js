@@ -25,16 +25,13 @@ router.get('/:qc_id/shares', shareController.getSharesByQuestionCard); //DONE �
 router.post('/:qc_id/shares', shareController.addShareToQuestionCard); //DONE ✅
 
 // Get comments for a question card
-router.get('/:qc_id/comments', commentController.getCommentsByQuestionCard); //DONE ✅ REVIEW FOR UPDATED TABLE
+router.get('/:qc_id/comments', commentController.getCommentsByQuestionCard); //DONE ✅ 
 
 // Add a comment to a question card
-router.post('/:qc_id/comments', commentController.addCommentToQuestionCard); //DONE ✅ REVIEW FOR UPDATED TABLE
+router.post('/:qc_id/comments', commentController.addCommentToQuestionCard); //DONE ✅ 
 
 // Remove a comment from a question card
 router.delete('/:qc_id/comments/:comment_id', commentController.deleteComment); //DONE ✅
-
-// Route to post a comment with song data to a question card
-router.post('/:qc_id/comments', commentController.postCommentWithSong);
 
 
 module.exports = router;
