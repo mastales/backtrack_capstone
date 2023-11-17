@@ -7,31 +7,31 @@ const commentController = require('../controllers/commentController');
 const router = express.Router();
 
 // Route to get a question card by ID
-router.get('/:qc_id', questionCardController.getQuestionCardById);
+router.get('/:qc_id', questionCardController.getQuestionCardById); //DONE ✅
 
 // Get likes for a question card
-router.get('/:qc_id/likes', likeController.getLikesByQuestionCard);
+router.get('/:qc_id/likes', likeController.getLikesByQuestionCard); //DONE ✅
 
 // Add a like to a question card
-router.post('/:qc_id/likes', likeController.addLikeToQuestionCard);
+router.post('/:qc_id/likes', likeController.addLikeToQuestionCard); //DONE ✅
 
 // Remove a like from a question card
-router.delete('/likes/:like_id', likeController.removeLikeFromQuestionCard);
+router.delete('/:qc_id/likes/:like_id', likeController.removeLikeFromQuestionCard); //DONE ✅
 
 // Get shares for a question card
-router.get('/:qc_id/shares', shareController.getSharesByQuestionCard);
+router.get('/:qc_id/shares', shareController.getSharesByQuestionCard); //DONE ✅
 
 // Add a share to a question card
-router.post('/:qc_id/shares', shareController.addShareToQuestionCard);
+router.post('/:qc_id/shares', shareController.addShareToQuestionCard); //DONE ✅
 
 // Get comments for a question card
-router.get('/:qc_id/comments', commentController.getCommentsByQuestionCard);
+router.get('/:qc_id/comments', commentController.getCommentsByQuestionCard); //DONE ✅ 
 
 // Add a comment to a question card
-router.post('/:qc_id/comments', commentController.addCommentToQuestionCard);
+router.post('/:qc_id/comments', commentController.addCommentToQuestionCard); //DONE ✅ 
 
-// Route to post a comment with song data to a question card
-router.post('/:qc_id/comments', commentController.postCommentWithSong);
+// Remove a comment from a question card
+router.delete('/:qc_id/comments/:comment_id', commentController.deleteComment); //DONE ✅
 
 
 module.exports = router;

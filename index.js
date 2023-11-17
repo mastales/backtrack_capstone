@@ -2,6 +2,10 @@ require('dotenv').config();
 const ip = require("ip");
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
+const passport = require('passport');
+const expressSession = require('express-session');
+const configurePassport = require('./src/config/passportConfig');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -10,18 +14,42 @@ const HOSTNAME = `http://${ip.address()}:${PORT}`;
 // Middleware setup
 app.use(cors()); 
 app.use(express.json()); 
+app.use(helmet());
 
+//Enable Express-Session
+app.use(
+    expressSession({
+      secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: true
+    })
+  );
+configurePassport();
+
+//Enable CORS
+app.use(
+    cors({
+      origin: true,
+      credentials: true
+    })
+  );
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routers
 const questionCardsRouter = require('./src/routes/questionCards');
 const songsRouter = require('./src/routes/songs');
-
+const spotifyAuth = require('./src/routes/spotifyAuth');
 
 //Routes
 app.use('/question_cards', questionCardsRouter);
 app.use('/songs', songsRouter);
+app.use('/auth/spotify', spotifyAuth);
 
-
+app.get('/', (req, res) => {
+    res.send('Welcome to the Spotify Authentication App!');
+  });
 
 // Handle 404 - Resource not found
 app.use((req, res, next) => {

@@ -27,7 +27,10 @@ const getLikesByQuestionCard = async (req, res) => {
 // Add a like to a question card
 const addLikeToQuestionCard = async (req, res) => {
   const { qc_id } = req.params;
-  const user_id = req.user.id; // Assuming user id from authenticated user
+  const { user_id } = req.body; // TESTING PURPOSES. Will be updated when Passport.js is implemented
+
+  console.log('User ID:', user_id, 'Type:', typeof user_id);
+  console.log('Request body:', req.body);
 
   try {
     const [newLikeId] = await knex('likes').insert({
