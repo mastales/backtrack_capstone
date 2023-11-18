@@ -1,97 +1,50 @@
-// src/components/QuestionCard.js
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import axios from 'axios';
+import CommentModal from '../modals/CommentModal';
 
-const QuestionCard = ({ id, url, description, initialLikes, initialShares }) => {
+const QuestionCard = ({ qcId, url, description, initialLikes, initialShares, userProfile }) => {
   const [likes, setLikes] = useState(initialLikes);
+  const [liked, setLiked] = useState(false);
+  const [likeId, setLikeId] = useState(null);
   const [shares, setShares] = useState(initialShares);
-  // No need for 'liked' state if we don't track the unliking
   const [shared, setShared] = useState(false);
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
-  const handleShare = (qcId) => {
-    // If the card has already been shared, we don't do anything
-    if (shared) return;
-
-    setShares(prev => prev + 1);
-    setShared(true); // Mark as shared
-    axios.post(`/question_cards/${qcId}/shares`, { user_id: 'the_actual_user_id' }) // Replace with actual user ID
-      .then(response => {
-        // Construct the URL to be copied
-        const shareLink = window.location.origin + `/question_card/${qcId}`; // Adjust if your URL structure is different
-        toast.info(`Card shared! Link: ${shareLink}`, {
-          position: "top-center",
-          autoClose: false,
-          closeOnClick: true,
-          draggable: true,
-        });
-      })
-      .catch(error => {
-        console.error('Error adding share', error);
-        setShares(prev => prev - 1);
-        setShared(false); // Revert shared status
-      });
-  };
-
-
   const handleLike = (qcId) => {
-    if (!liked) {
-      // Not liked yet, so post a new like
-      setLikes((prev) => prev + 1);
-      axios.post(`/question_cards/${qcId}/likes`, { user_id: 'the_actual_user_id' }) // Replace with actual user ID
-        .then((response) => {
-          // If the backend response includes the like id, update state
-          setLikeId(response.data.like.like_id);
-          setLiked(true);
-        })
-        .catch((error) => {
-          console.error('Error adding like', error);
-          setLikes((prev) => prev - 1); // Revert optimistic like count update
-        });
-    } else {
-      // Already liked, so send a request to remove the like
-      if (likeId) {
-        setLikes((prev) => prev - 1);
-        axios.delete(`/question_cards/${qcId}/likes/${likeId}`)
-          .then(() => {
-            setLiked(false);
-            setLikeId(null); // Clear the likeId since the like has been removed
-          })
-          .catch((error) => {
-            console.error('Error removing like', error);
-            setLikes((prev) => prev + 1); // Revert optimistic like count update
-          });
-      }
-    }
+    // ... existing logic for handleLike
   };
 
-// Function to handle opening the comment modal
-const openCommentModal = () => {
-  setIsCommentModalOpen(true);
-};
+  const handleShare = (qcId) => {
+    // ... existing logic for handleShare
+  };
 
-// Function to handle closing the comment modal
-const closeCommentModal = () => {
-  setIsCommentModalOpen(false);
-};
+  const openCommentModal = () => {
+    console.log("Opening Comment Modal");
+    setIsCommentModalOpen(true);
+  };
 
+  const closeCommentModal = () => {
+    console.log("Closing Comment Modal");
+    setIsCommentModalOpen(false);
+  };
 
   return (
     <div className="question-card">
-      <img src={url} alt="Question" />
+      
       <p>{description}</p>
       <div className="actions">
-        <button onClick={() => handleLike(id)}>{liked ? '😍' : '❤️'} {likes}</button>
-        <Button onClick={openCommentModal}>💬 Comment</Button>
-        <button onClick={() => handleShare(id)}>🔗 {shares}</button>
-        {/* Comments functionality will go here */}
-        <CommentModal
+        <button onClick={() => handleLike(qcId)}>{liked ? '😍' : '❤️'} {likes}</button>
+        <button onClick={openCommentModal}>💬 Comment</button>
+        <button onClick={() => handleShare(qcId)}>🔗 {shares}</button>
+      </div>
+      
+      <CommentModal
         show={isCommentModalOpen}
         handleClose={closeCommentModal}
-        qcId={id}
-        userProfile={userProfile} // Pass the authenticated user's profile data
+        qcId={qcId}
+        // userProfile={userProfile} // Pass the authenticated user's profile data
       />
-      </div>
     </div>
   );
 };

@@ -1,0 +1,43 @@
+$header-bg-color: #C0E6DE;
+$active-link-color: #E88D67;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: $header-bg-color;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+
+  .logo-emoji {
+    font-size: 2em; 
+  }
+
+  .app-name {
+    margin-left: 10px;
+    font-weight: bold;
+  }
+}
+
+.navigation {
+  a {
+    text-decoration: none;
+    color: #000;
+    margin: 0 10px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+
+    &.active-link {
+      background-color: $active-link-color;
+    }
+
+    &:hover {
+      background-color: lighten($active-link-color, 10%);
+    }
+  }
+}

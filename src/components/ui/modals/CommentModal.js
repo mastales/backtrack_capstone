@@ -1,82 +1,54 @@
-// src/components/CommentModal.js
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form, ListGroup } from 'react-bootstrap';
+import { Modal, ListGroup, Button } from 'react-bootstrap';
+import axios from 'axios'; // Make sure axios is installed
 
-const CommentModal = ({ show, handleClose, submitComment, qcId, existingComments }) => {
-  const [commentText, setCommentText] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+const CommentModal = ({ qcId, show, handleClose }) => {
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    // If you have a search bar and want to fetch search hits based on searchTerm,
-    // you would trigger the search here and update `searchResults`.
-  }, [searchTerm]);
+    
+    const fetchComments = async () => {
+      console.log('Fetching comments for qcId:', qcId); // Log to verify qcId
+      try {
+        // Fetch comments from the backend
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/question_cards/${qcId}/comments`);
+        console.log('Response:', response); // Log to inspect the response
+        if (response.status === 200) {
+          setComments(response.data.comments); // Update state with fetched comments
+        } else {
+          console.error('Failed to fetch comments');
+        }
+      } catch (error) {
+        console.error('Error fetching comments:', error);
+      }
+    };
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-    // Trigger the search logic
-  };
-
-  const handleCommentChange = (e) => {
-    setCommentText(e.target.value);
-  };
-
-  const handleCommentSubmit = () => {
-    submitComment(commentText, qcId);
-    setCommentText('');
-    handleClose();
-  };
+    if (show && qcId) {
+      fetchComments(); // Call fetchComments only if the modal is shown and cardId is present
+    }
+  }, [show, qcId]); // Dependency array includes show and cardId
 
   return (
-    <Modal
-      show={show}
-      onHide={handleClose}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
+    <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Add Comment
-        </Modal.Title>
+        <Modal.Title>Comments</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form>
-          <Form.Group>
-            <Form.Control
-              type="text"
-              placeholder="Search for song"
-              value={searchTerm}
-              onChange={handleSearch}
-              autoFocus
-            />
-            <ListGroup variant="flush">
-              {searchResults.map((hit, index) => (
-                <ListGroup.Item key={index}>{hit}</ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Form.Group>
-          <Form.Group>
-            <Form.Control
-              as="textarea"
-              rows={3}
-              placeholder="Add comments here..."
-              value={commentText}
-              onChange={handleCommentChange}
-            />
-          </Form.Group>
-        </Form>
-        <div className="existing-comments">
-          <h5>Existing Comments</h5>
-          <ListGroup variant="flush">
-            {existingComments.map((comment, index) => (
-              <ListGroup.Item key={index}>{comment.username}: {comment.content}</ListGroup.Item>
+        {comments.length > 0 ? (
+          <ListGroup>
+            {comments.map((comment, index) => (
+              <ListGroup.Item key={index}>
+                <strong>{comment.username}</strong>: {comment.content}
+                {/* You can add more details from the comment here */}
+              </ListGroup.Item>
             ))}
           </ListGroup>
-        </div>
+        ) : (
+          <p>No comments available.</p>
+        )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={handleCommentSubmit}>+ Add Song & Comment</Button>
+        <Button variant="secondary" onClick={handleClose}>Close</Button>
       </Modal.Footer>
     </Modal>
   );

@@ -1,0 +1,20 @@
+
+// QuestionCardContainer.scss
+.question-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; // This provides space between the cards
+    justify-content: center; // This centers the cards in the container
+    padding: 20px; // Add some padding around the entire container
+  }
+  
+  // Individual question cards
+  .question-card {
+    width: 300px; // Or whatever width you prefer
+    border: 1px solid #E88D67; // Use the orange color for the border
+    border-radius: 8px; // Rounded corners for the cards
+    padding: 20px; // Padding inside the cards
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // A subtle shadow for some depth
+    background-color: #fff; // A white background for the card content
+  }
+  

@@ -1,0 +1,18 @@
+$footer-bg-color: #C0E6DE;
+
+.footer {
+  padding: 10px 20px;
+  background-color: $footer-bg-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    text-align: center;
+    p {
+      color: #333; // Choose a color that contrasts well with the background
+      margin: 0;
+    }
+  }
+}
+

@@ -1,0 +1,32 @@
+.login-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; // Fill the entire viewport height
+  
+    h1, h3 {
+      text-align: center;
+    }
+  
+    .btn-primary {
+      background-color: #E88D67; // Use the same orange color as in the header
+      border: none;
+    }
+  
+    hr {
+      border-top: 1px solid #ddd;
+      width: 100%;
+    }
+  
+    .login-footer {
+      text-align: center;
+      margin-top: 20px;
+  
+      a {
+        display: block;
+        color: #E88D67; // Same orange color for links
+      }
+    }
+  }
+  

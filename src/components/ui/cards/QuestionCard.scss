@@ -1,0 +1,56 @@
+.question-card {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+  
+    .card-body {
+      padding: 15px;
+    }
+  
+    .card-footer {
+      padding: 10px 15px;
+      background-color: #f8f9fa;
+      border-top: 1px solid #ddd;
+    }
+  
+    .accordion-button {
+      text-decoration: none;
+      color: #007bff;
+      &:hover {
+        color: #0056b3;
+      }
+    }
+  
+    .list-group-item {
+      padding: 10px 15px;
+      border: none;
+    }
+  }
+  
+
+// QuestionCardContainer.scss
+.question-card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; // This provides space between the cards
+    justify-content: center; // This centers the cards in the container
+    padding: 20px; // Add some padding around the entire container
+  }
+  
+  // Individual question cards
+  .question-card {
+    width: 300px; // Or whatever width you prefer
+    border: 1px solid #E88D67; // Use the orange color for the border
+    border-radius: 8px; // Rounded corners for the cards
+    padding: 20px; // Padding inside the cards
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); // A subtle shadow for some depth
+    background-color: #fff; // A white background for the card content
+  }
+  

@@ -1,40 +1,39 @@
-// src/components/QuestionCardsContainer.js
 import React, { useEffect, useState } from 'react';
-import QuestionCard from './QuestionCard';
 import axios from 'axios';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import QuestionCard from './QuestionCard';
+import './QuestionCard.scss';
 
-const QuestionCardsContainer = () => {
+const QuestionCardContainer = () => {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    // Fetch all the question cards
-    axios.get('/question_cards')
-      .then(response => {
-        setCards(response.data); 
-      })
-      .catch(error => {
+    const fetchQuestionCards = async () => {
+      try {
+        // Replace '/api/question-cards' with the correct endpoint from your backend
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/question_cards/`);
+        setCards(response.data); // Assuming the response data is the array of cards
+      } catch (error) {
         console.error('Error fetching question cards:', error);
-        // Add error handling for the UI
-      });
+      }
+    };
+
+    fetchQuestionCards();
   }, []);
 
   return (
-    <div className="question-cards-container">
-      <ToastContainer />
+    <div className="question-card-container">
       {cards.map(card => (
         <QuestionCard
-          key={card.id}
-          id={card.id}
-          url={card.image_url} 
-          description={card.description} 
-          initialLikes={card.likes} 
-          initialShares={card.shares} 
+          key={card.qcId}
+          id={card.qcId}
+          url={card.image_url}
+          description={card.description}
+          initialLikes={card.likes}
+          initialShares={card.shares}
         />
       ))}
     </div>
   );
 };
 
-export default QuestionCardsContainer;
+export default QuestionCardContainer;

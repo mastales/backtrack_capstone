@@ -1,11 +1,10 @@
 // src/components/HomePage.js
 import React from 'react';
-import QuestionCardsContainer from './QuestionCardsContainer';
+import QuestionCardsContainer from '../ui/cards/QuestionCardsContainer';
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>Welcome to BackTrack!</h1>
+    <div>  
       <QuestionCardsContainer />
     </div>
   );
