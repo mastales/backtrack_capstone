@@ -1,4 +1,6 @@
 const knex = require('../../db');
+const passport = require('passport');
+
 // Controller for shares
 
 // Get share count for a question card
@@ -29,7 +31,12 @@ const getSharesByQuestionCard = async (req, res) => {
   // Add a share to a question card
   const addShareToQuestionCard = async (req, res) => {
     const { qc_id } = req.params;
-    const { user_id } = req.body; // TESTING PURPOSES. Will be updated when Passport.js is implemented
+    // Check if the authenticated user's ID is available
+    if (!req.user || !req.user.user_id) {
+      return res.status(401).send('Unauthorized: User not authenticated');
+    }
+  
+    const user_id = req.user.user_id;
   
     try {
       const [newShareId] = await knex('shares').insert({
@@ -47,7 +54,7 @@ const getSharesByQuestionCard = async (req, res) => {
         }
       });
     } catch (error) {
-      console.error(error);
+      console.error('Error adding share:', error);
       res.status(500).send('An error occurred while adding the share.');
     }
   };

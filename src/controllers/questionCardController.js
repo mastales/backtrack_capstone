@@ -1,4 +1,6 @@
 const knex = require('../../db');
+const passport = require('passport');
+
 
 const getQuestionCardById = async (req, res) => {
   const { qc_id } = req.params;
@@ -32,6 +34,28 @@ const getQuestionCardById = async (req, res) => {
   }
 };
 
+const getAllQuestionCards = async (req, res) => {
+  try {
+    const questionCards = await knex('question_cards').select('*');
+    const cardsWithCounts = await Promise.all(questionCards.map(async (card) => {
+      const likesCount = await knex('likes').where('qc_id', card.qc_id).count('like_id as count').first();
+      const commentsCount = await knex('comments').where('qc_id', card.qc_id).count('comment_id as count').first();
+      const sharesCount = await knex('shares').where('qc_id', card.qc_id).count('share_id as count').first();
+      return {
+        ...card,
+        likes: likesCount.count,
+        comments: commentsCount.count,
+        shares: sharesCount.count
+      };
+    }));
+    res.json(cardsWithCounts);
+  } catch (error) {
+    console.error('Error fetching all question cards:', error);
+    res.status(500).send('An error occurred while fetching all question cards.');
+  }
+};
+
 module.exports = {
   getQuestionCardById,
+  getAllQuestionCards,
 };

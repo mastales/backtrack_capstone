@@ -1,4 +1,6 @@
 const knex = require('../../db');
+const passport = require('passport');
+
 // Controller for comments
 
 // Get all comments for a question card
@@ -40,8 +42,14 @@ const getCommentsByQuestionCard = async (req, res) => {
 
 const addCommentToQuestionCard = async (req, res) => {
   const { qc_id } = req.params;
-  const { user_id, content, track_name, artist_name, track_url, track_image_url } = req.body;
-
+  const { content, track_name, artist_name, track_url, track_image_url } = req.body;
+ 
+  // Check if the authenticated user's ID is available
+ if (!req.user || !req.user.user_id) {
+  return res.status(401).send('Unauthorized: User not authenticated');
+  }
+const user_id = req.user.user_id;
+  
   try {
     // Check if the question card exists
     const cardExists = await knex('question_cards').where('qc_id', qc_id).first();
@@ -81,22 +89,36 @@ const addCommentToQuestionCard = async (req, res) => {
 };
 
   
-  const deleteComment = async (req, res) => {
-    const { comment_id } = req.params;
-  
-    try {
-      const deletedRows = await knex('comments').where('comment_id', comment_id).del();
-  
-      if (deletedRows) {
-        res.status(200).json({ message: 'Comment deleted successfully' });
-      } else {
-        res.status(404).send('Comment not found');
-      }
-    } catch (error) {
-      console.error('Error deleting comment:', error);
-      res.status(500).send('An error occurred while deleting the comment.');
+const deleteComment = async (req, res) => {
+  const { comment_id } = req.params;
+
+  // Check if the authenticated user's ID is available
+  if (!req.user || !req.user.user_id) {
+    return res.status(401).send('Unauthorized: User not authenticated');
+  }
+  const user_id = req.user.user_id;
+
+  try {
+    // Retrieve the comment to check ownership
+    const comment = await knex('comments').where({ comment_id }).first();
+    if (!comment) {
+      return res.status(404).send('Comment not found');
     }
-  };
+
+    // Check if the user is the owner of the comment
+    if (comment.user_id !== user_id) {
+      return res.status(403).send('Forbidden: User does not have permission to delete this comment');
+    }
+
+    // Delete the comment
+    await knex('comments').where({ comment_id }).del();
+    res.json({ message: 'Comment deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting comment:', error);
+    res.status(500).send('An error occurred while deleting the comment.');
+  }
+};
+
   
   
   module.exports = {

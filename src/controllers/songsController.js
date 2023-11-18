@@ -1,5 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
+const passport = require('passport');
+
 
 // Controller for song search
 const searchSongs = async (req, res) => {
