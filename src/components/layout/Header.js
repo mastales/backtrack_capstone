@@ -7,7 +7,7 @@ const Header = () => {
     <header className="header">
       <div className="logo-container">
         <span className="logo-emoji">🔂</span>
-        <span className="app-name">BackTrack</span>
+        <span className="app-name">BackTrack Music Journal</span>
       </div>
       <nav className="navigation">
         <NavLink to="/" exact activeClassName="active-link">Home</NavLink>

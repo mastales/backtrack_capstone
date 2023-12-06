@@ -1,39 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import QuestionCard from './QuestionCard';
 import './QuestionCard.scss';
 
-const QuestionCardContainer = () => {
-  const [cards, setCards] = useState([]);
-
-  useEffect(() => {
-    const fetchQuestionCards = async () => {
-      try {
-        // Replace '/api/question-cards' with the correct endpoint from your backend
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/question_cards/`);
-        setCards(response.data); // Assuming the response data is the array of cards
-      } catch (error) {
-        console.error('Error fetching question cards:', error);
-      }
-    };
-
-    fetchQuestionCards();
-  }, []);
+const QuestionCardsContainer = ({ mockData }) => {  // Accepting mockData as a prop
 
   return (
     <div className="question-card-container">
-      {cards.map(card => (
+      {mockData.map(card => (
         <QuestionCard
           key={card.qcId}
           id={card.qcId}
           url={card.image_url}
-          description={card.description}
+          description={card.question} 
           initialLikes={card.likes}
           initialShares={card.shares}
+          comments={card.comments}
         />
       ))}
     </div>
   );
 };
 
-export default QuestionCardContainer;
+export default QuestionCardsContainer;

@@ -1,11 +1,10 @@
-// src/components/HomePage.js
 import React from 'react';
 import QuestionCardsContainer from '../ui/cards/QuestionCardsContainer';
 
-const HomePage = () => {
+const HomePage = ({ mockData }) => { 
   return (
     <div>  
-      <QuestionCardsContainer />
+      <QuestionCardsContainer mockData={mockData} /> 
     </div>
   );
 };
